@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHABRI ACCESS</title>
+<meta name="description" content="One verified account. Plans that unlock access as you grow.">
+<meta name="theme-color" content="#060912">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060912;--s1:#0c1222;--s2:#111a30;--line:#1b2745;--tx:#e7ecf8;--mu:#8c99b8;--bl:#2e6bff;--bh:#5c8dff;--ok:#2dd4a0;--wn:#f5b544;--er:#ff5d73;--f1:'Bricolage Grotesque',system-ui,sans-serif;--f2:'Instrument Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:400 16px/1.6 var(--f2);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;outline:none}
+h1,h2,h3{font-family:var(--f1);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+h2{font-size:clamp(26px,3.4vw,38px)}
+h3{font-size:19px}
+a{color:var(--bh);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--bh);outline-offset:2px;border-radius:6px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--bl);color:#fff;padding:8px 12px;border-radius:8px;z-index:100}
+.wrap{width:min(1120px,100% - 40px);margin-inline:auto}
+.mu{color:var(--mu)}
+[hidden]{display:none!important}
+
+#banner .bar{background:#10244d;color:#cfe0ff;font-size:14px;padding:8px 20px;text-align:center}
+header.top{position:sticky;top:0;z-index:20;background:rgba(6,9,18,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .in{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font:800 18px var(--f1);letter-spacing:.03em;color:var(--tx);display:flex;align-items:center;gap:10px}
+.brand:hover{text-decoration:none}
+.brand i{width:24px;height:24px;border-radius:8px;background:var(--bl);display:grid;place-items:center;color:#fff}
+nav.links{display:flex;gap:4px;align-items:center}
+nav.links a,nav.links .lnk{color:var(--mu);padding:8px 12px;border-radius:8px;font:500 15px var(--f2);background:none;border:0;cursor:pointer}
+nav.links a:hover,nav.links .lnk:hover{color:var(--tx);text-decoration:none}
+nav.links a[aria-current=page]{color:var(--tx);background:var(--s2)}
+.burger{display:none;background:none;border:1px solid var(--line);color:var(--tx);border-radius:10px;width:44px;height:44px;place-items:center;cursor:pointer}
+@media(max-width:760px){
+ .burger{display:grid}
+ nav.links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;align-items:stretch;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 20px 16px}
+ nav.links.open{display:flex}
+ nav.links a,nav.links .lnk{padding:12px;text-align:left}
+}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px var(--f2);padding:12px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:background .15s,border-color .15s,transform .1s;min-height:46px;color:var(--tx);background:none}
+.btn:hover{text-decoration:none}.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--bl);color:#fff}.btn.primary:hover{background:#4a80ff}
+.btn.ghost{border-color:var(--line)}.btn.ghost:hover{border-color:var(--bh)}
+.btn.danger{border-color:#5a2230;color:var(--er)}.btn.danger:hover{background:rgba(255,93,115,.08)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.sm{min-height:38px;padding:8px 14px;font-size:14px}.btn.block{width:100%}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+.hero{padding:72px 0 64px}
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+h1.display{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.lead{color:var(--mu);font-size:19px;max-width:52ch;margin:20px 0 28px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+@media(max-width:860px){.hero{padding:40px 0}.hero .grid{grid-template-columns:1fr;gap:40px}}
+
+.pass{position:relative;background:linear-gradient(180deg,var(--s2),var(--s1));border:1px solid #243566;border-radius:22px;padding:24px 26px;box-shadow:0 30px 80px -30px rgba(46,107,255,.5)}
+.pass>h3{font:500 14px var(--f2);color:var(--mu);letter-spacing:0;margin-bottom:6px}
+.tier{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.pass>h3+.tier{border-top:0}
+.tier>div{flex:1}
+.tier .amt{font:700 17px var(--f1)}
+.dot{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);position:relative;color:var(--mu);flex:none}
+.dot span{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .3s}
+.dot .open{opacity:0}
+.tier.u0 .dot{border-color:var(--bl);color:var(--bh);background:rgba(46,107,255,.14)}
+.tier.u0 .open{opacity:1}.tier.u0 .shut{opacity:0}
+.tier.u1 .dot{animation:dotOn .5s 1.1s forwards}.tier.u1 .open{animation:fin .4s 1.1s forwards}.tier.u1 .shut{animation:fout .4s 1.1s forwards}
+.tier.u2 .dot{animation:dotOn .5s 2.1s forwards}.tier.u2 .open{animation:fin .4s 2.1s forwards}.tier.u2 .shut{animation:fout .4s 2.1s forwards}
+@keyframes dotOn{to{border-color:var(--bl);color:var(--bh);background:rgba(46,107,255,.14)}}
+@keyframes fin{to{opacity:1}}@keyframes fout{to{opacity:0}}
+@media(prefers-reduced-motion:reduce){
+ *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+ .tier .dot{border-color:var(--bl);color:var(--bh);background:rgba(46,107,255,.14)}.tier .open{opacity:1}.tier .shut{opacity:0}
+}
+
+section.band{padding:72px 0;border-top:1px solid var(--line)}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:36px}
+.cols>div{padding:0 28px;border-left:1px solid var(--line)}.cols>div:first-child{padding-left:0;border-left:0}
+.cols h3{margin-bottom:8px}.cols p{color:var(--mu)}
+@media(max-width:860px){.cols{grid-template-columns:1fr;gap:28px}.cols>div{padding:0;border:0}}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:18px 48px;margin-top:32px;list-style:none;padding:0}
+.facts li{display:flex;gap:12px;color:#c4cde4}.facts svg{flex:none;color:var(--bh);margin-top:4px}
+@media(max-width:760px){.facts{grid-template-columns:1fr}}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:32px;counter-reset:s;list-style:none;padding:0}
+.steps li{counter-increment:s;background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:22px}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(46,107,255,.16);color:var(--bh);font:700 14px var(--f1);margin-bottom:12px}
+.steps b{display:block;font:700 17px var(--f1);margin-bottom:4px}.steps span{color:var(--mu);font-size:15px}
+@media(max-width:860px){.steps{grid-template-columns:1fr}}
+.endcta{text-align:center;padding:80px 0}.endcta p{color:var(--mu);margin:12px 0 24px}
+
+.pagehead{padding:56px 0 24px}.pagehead p{color:var(--mu);margin-top:10px;max-width:60ch}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0 72px}
+.plan{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column}
+.plan.hl{border-color:var(--bl);box-shadow:0 0 0 1px var(--bl),0 24px 60px -30px rgba(46,107,255,.6)}
+.plan .tag{align-self:flex-start;font-size:13px;font-weight:600;color:var(--bh);background:rgba(46,107,255,.14);border-radius:999px;padding:2px 10px;margin-bottom:10px}
+.price{font:800 40px var(--f1);letter-spacing:-.03em;margin-top:12px}.price small{font:500 15px var(--f2);color:var(--mu);letter-spacing:0}
+.plan ul{list-style:none;padding:0;margin:20px 0 28px;display:grid;gap:10px;flex:1}
+.plan li{display:flex;gap:10px}.plan li svg{flex:none;color:var(--bh);margin-top:5px}
+@media(max-width:900px){.plans{grid-template-columns:1fr}}
+
+.auth{max-width:460px;margin:48px auto 72px;padding:0 20px}
+.panel{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:28px}
+.panel h1{font-size:30px;margin-bottom:6px}.panel>.sub{color:var(--mu);margin-bottom:22px}
+.field{margin-bottom:16px}.field>label{display:block;font-weight:500;margin-bottom:6px;font-size:14px}
+.field input[type=text],.field input[type=email],.field input[type=password],.field input[type=tel]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;color:var(--tx);font:inherit;min-height:46px}
+.field input:focus{border-color:var(--bl);outline:none;box-shadow:0 0 0 3px rgba(46,107,255,.25)}
+.field.bad input{border-color:var(--er)}
+.err{color:var(--er);font-size:13px;margin-top:6px}.err:empty{display:none}
+.hint{color:var(--mu);font-size:13px;margin-top:6px}
+.pw{position:relative}.pw input{padding-right:70px!important}
+.pw button{position:absolute;right:6px;top:6px;height:34px;padding:0 10px;background:none;border:0;color:var(--bh);font:500 13px var(--f2);cursor:pointer;border-radius:8px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--mu)}
+.check input{margin-top:4px;width:18px;height:18px;accent-color:var(--bl);flex:none}
+.alert{border-radius:10px;padding:12px 14px;font-size:14px;margin-bottom:16px;border:1px solid}
+.alert.er{background:rgba(255,93,115,.08);border-color:#5a2230;color:#ffc4cd}
+.alert.ok{background:rgba(45,212,160,.08);border-color:#14503f;color:#b6f2de}
+.alert.wn{background:rgba(245,181,68,.08);border-color:#5b4519;color:#f7d9a0}
+.alert.in{background:rgba(46,107,255,.1);border-color:#243566;color:#cfe0ff}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.links2{margin-top:20px;text-align:center;font-size:14px;color:var(--mu)}
+.setup ol{margin:14px 0 0 20px;display:grid;gap:8px;color:#c4cde4}
+.setup code,.panel code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
+.bigicon{width:56px;height:56px;border-radius:16px;background:rgba(46,107,255,.14);color:var(--bh);display:grid;place-items:center;margin-bottom:18px}
+.bigicon.ok{background:rgba(45,212,160,.12);color:var(--ok)}.bigicon.er{background:rgba(255,93,115,.12);color:var(--er)}
+
+.dash{padding:40px 0 80px}
+.dash h1{font-size:clamp(28px,4vw,40px)}
+.dgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-top:28px}
+.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media(max-width:900px){.c4,.c6,.c8{grid-column:span 12}}
+.box{background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:24px}
+.box>h3{margin-bottom:14px}
+.k{color:var(--mu);font-size:14px}.v{font:700 26px var(--f1);margin:4px 0 10px}
+.flist{list-style:none;padding:0;display:grid;gap:10px}
+.flist li{display:flex;gap:10px}.flist svg{flex:none;margin-top:5px;color:var(--bh)}
+.flist li.lock{color:var(--mu)}.flist li.lock svg{color:var(--mu)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--line);color:var(--mu)}
+.badge.ok{color:var(--ok);border-color:#14503f;background:rgba(45,212,160,.08)}
+.badge.wn{color:var(--wn);border-color:#5b4519;background:rgba(245,181,68,.08)}
+.badge.er{color:var(--er);border-color:#5a2230;background:rgba(255,93,115,.08)}
+.badge.bl{color:var(--bh);border-color:#243566;background:rgba(46,107,255,.12)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;color:var(--mu);font-weight:500;padding:10px 12px;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.empty{color:var(--mu);padding:8px 0}
+@media(max-width:640px){
+ .tbl thead{display:none}.tbl tr{display:block;padding:10px 0;border-bottom:1px solid var(--line)}.tbl tr:last-child{border:0}
+ .tbl td{display:flex;justify-content:space-between;gap:16px;border:0;padding:4px 0;text-align:right}
+ .tbl td::before{content:attr(data-l);color:var(--mu);text-align:left}
+}
+.checkout{max-width:880px;margin:40px auto 80px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+@media(max-width:800px){.checkout{grid-template-columns:1fr}}
+.sumrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.sumrow:last-of-type{border:0;font:700 20px var(--f1)}
+
+.prose{max-width:72ch;padding:48px 0 80px}
+.prose h1{font-size:clamp(30px,4vw,44px);margin-bottom:6px}
+.prose h2{font-size:21px;margin:30px 0 8px}
+.prose p,.prose li{color:#c4cde4;margin-bottom:10px}.prose ul{margin-left:22px}
+.prose .note{margin:18px 0}
+
+footer.foot{border-top:1px solid var(--line);padding:48px 0 32px;margin-top:auto;color:var(--mu);font-size:14px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:32px}
+.fgrid h4{font:600 14px var(--f2);color:var(--tx);margin-bottom:10px}
+.fgrid a{display:block;color:var(--mu);padding:3px 0}.fgrid a:hover{color:var(--tx)}
+.copy{margin-top:32px;padding-top:20px;border-top:1px solid var(--line)}
+@media(max-width:760px){.fgrid{grid-template-columns:1fr 1fr}.fgrid>div:first-child{grid-column:span 2}}
+
+#toasts{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:grid;gap:8px;z-index:60;width:min(420px,100% - 32px)}
+.toast{background:var(--s2);border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.4);font-size:14px}
+.toast.ok{border-color:#14503f}.toast.er{border-color:#5a2230}
+dialog{background:var(--s1);color:var(--tx);border:1px solid var(--line);border-radius:18px;padding:24px;max-width:440px;width:calc(100% - 40px);margin:auto}
+dialog::backdrop{background:rgba(2,4,10,.72)}
+dialog h3{margin-bottom:8px}dialog p{color:var(--mu);margin-bottom:20px}
+dialog .row{justify-content:flex-end}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="banner"></div>
+<header class="top"><div class="wrap in" id="nav"></div></header>
+<main id="main" tabindex="-1"></main>
+<footer class="foot"><div class="wrap" id="foot"></div></footer>
+<div id="toasts" aria-live="polite"></div>
+<dialog id="dlg"></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+'use strict';
+
+/* =====================================================================
+   CONFIG: the only block you need to edit.
+   The anon key is a PUBLIC key by design. Never put the service-role key
+   or any Paystack key in this file.
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: 'https://kvnzcqtkkguuftrirsew.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bnpjcXRra2d1dWZ0cmlyc2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2Mzk5MTAsImV4cCI6MjEwNzIxNTkxMH0.vN5ELoWxAtAGDN_4qIPQaQ8mmv4h_G4e5EF4_7MbFt0',   // public anon key
+  APP_NAME: 'CHABRI ACCESS',
+  COMPANY: 'Chabri',
+  SUPPORT_EMAIL: 'support@example.com',   // replace with a real inbox before launch
+  ADDRESS: 'Nigeria',                      // replace with your registered address
+  RESEND_COOLDOWN_SECONDS: 60,
+  LEGAL_UPDATED: 'October 10, 2026'
+};
+
+/* Used only to display the pricing page before a backend is connected. Real prices live in the database. */
+const DEFAULT_PLANS = [
+  {id:'free',name:'Free',tagline:'Try CHABRI ACCESS at no cost',price_kobo:0,currency:'NGN',billing_interval:'month',features:['Basic access','1 project','Community support'],limits:{projects:1,requests_per_month:50},tier:0,highlighted:false},
+  {id:'pro',name:'Pro',tagline:'More features, higher limits',price_kobo:500000,currency:'NGN',billing_interval:'month',features:['Everything in Free','10 projects','2,000 requests a month','Email support'],limits:{projects:10,requests_per_month:2000},tier:1,highlighted:true},
+  {id:'premium',name:'Premium',tagline:'Full access with priority help',price_kobo:1500000,currency:'NGN',billing_interval:'month',features:['Everything in Pro','Unlimited projects','20,000 requests a month','Priority support','Early access to new tools'],limits:{projects:-1,requests_per_month:20000},tier:2,highlighted:false}
+];
+
+/* ---------- utilities ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = (k, cur = 'NGN') => new Intl.NumberFormat('en-NG', {style:'currency', currency:cur, minimumFractionDigits: k % 100 ? 2 : 0, maximumFractionDigits: 2}).format(k / 100);
+const fdate = d => d ? new Date(d).toLocaleDateString('en-NG', {day:'numeric', month:'short', year:'numeric'}) : 'n/a';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const mem = {};
+const store = {
+  get(k){ try { return sessionStorage.getItem(k); } catch(_) { return mem[k] ?? null; } },
+  set(k,v){ try { sessionStorage.setItem(k,v); } catch(_) { mem[k] = v; } },
+  del(k){ try { sessionStorage.removeItem(k); } catch(_) { delete mem[k]; } }
+};
+
+const ICON = {
+  check:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+  lock:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+  unlock:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>',
+  mail:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+  ok:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+  x:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+  menu:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  key:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8m-3 3 3 3"/></svg>'
+};
+
+/* ---------- backend ---------- */
+const CONFIGURED = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient);
+let sb = null;
+if (CONFIGURED) {
+  // "Remember me" picks where the session lives: localStorage (remembered) or sessionStorage (until the tab closes).
+  const pick = () => { try { return localStorage.getItem('ca_remember') === '0' ? sessionStorage : localStorage; } catch(_) { return null; } };
+  const storage = {
+    getItem: k => { const s = pick(); return s ? s.getItem(k) : (mem[k] ?? null); },
+    setItem: (k,v) => { const s = pick(); if (s) s.setItem(k,v); else mem[k] = v; },
+    removeItem: k => { try { localStorage.removeItem(k); sessionStorage.removeItem(k); } catch(_) {} delete mem[k]; }
+  };
+  sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage }
+  });
+}
+
+const S = { user: null, plans: null, plansFallback: false, pending: null, next: null };
+let renderTok = 0;
+let timers = [];
+
+async function getPlans() {
+  if (S.plans) return S.plans;
+  if (CONFIGURED) {
+    const { data, error } = await sb.from('plans').select('*').eq('active', true).order('tier');
+    if (!error && data && data.length) { S.plans = data; return S.plans; }
+  }
+  S.plans = DEFAULT_PLANS; S.plansFallback = true;
+  return S.plans;
+}
+const planOf = (plans, id) => plans.find(p => p.id === id);
+const perLabel = p => p.billing_interval === 'year' ? 'per year' : 'per month';
+
+async function getEnt() {
+  const { data } = await sb.rpc('my_entitlement');
+  return (data && data[0]) || { plan_id:'free', status:'active', current_period_start:null, current_period_end:null, cancel_at_period_end:false, is_recurring:false };
+}
+
+async function callFn(name, body) {
+  const { data, error } = await sb.functions.invoke(name, { body });
+  if (error) {
+    let msg = 'Something went wrong. Try again.';
+    try { const j = await error.context.json(); if (j && j.error) msg = j.error; } catch(_) {}
+    return { error: msg };
+  }
+  if (data && data.error) return { error: data.error };
+  return { data };
+}
+
+function authMsg(e) {
+  const m = (e && e.message || '').toLowerCase(), c = e && e.code || '';
+  if (c === 'invalid_credentials' || m.includes('invalid login')) return 'Email or password is incorrect.';
+  if (c === 'user_already_exists') return 'An account with this email already exists. Log in instead.';
+  if (c === 'weak_password') return 'Choose a stronger password.';
+  if (c === 'same_password') return 'Your new password must be different from the current one.';
+  if (c.includes('rate_limit') || m.includes('rate limit') || m.includes('too many')) return 'Too many attempts. Wait a few minutes and try again.';
+  if (m.includes('failed to fetch') || m.includes('network')) return 'Network problem. Check your connection and try again.';
+  return (e && e.message) || 'Something went wrong. Try again.';
+}
+
+/* ---------- ui helpers ---------- */
+function toast(msg, type = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type; t.textContent = msg;
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), 4200);
+}
+
+function confirmDlg({title, body, ok = 'Confirm', danger = false}) {
+  return new Promise(res => {
+    const d = $('#dlg');
+    d.innerHTML = `<form method="dialog"><h3>${esc(title)}</h3><p>${esc(body)}</p><div class="row"><button class="btn ghost" value="no">Cancel</button><button class="btn ${danger ? 'danger' : 'primary'}" value="yes">${esc(ok)}</button></div></form>`;
+    d.returnValue = '';
+    d.onclose = () => res(d.returnValue === 'yes');
+    d.showModal();
+  });
+}
+
+function wireForm(form, fn) {
+  const btn = $('button[type=submit]', form), box = $('.form-error', form);
+  form.setAttribute('novalidate', '');
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (btn.disabled) return;
+    box.hidden = true;
+    $$('.field', form).forEach(f => { f.classList.remove('bad'); const x = $('.err', f); if (x) x.textContent = ''; });
+    const label = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = '<span class="spin"></span> ' + esc(btn.dataset.busy || 'Working');
+    try { await fn(form); }
+    catch (err) { box.textContent = err.message || 'Something went wrong. Try again.'; box.hidden = false; }
+    finally { if (btn.isConnected) { btn.disabled = false; btn.innerHTML = label; } }
+  });
+}
+function bad(form, name, msg) {
+  const el = form.elements[name]; const f = el.closest('.field');
+  f.classList.add('bad'); $('.err', f).textContent = msg; return false;
+}
+const focusBad = form => { const i = $('.field.bad input', form); if (i) i.focus(); };
+const pwIssues = p => { const r = []; if (p.length < 10) r.push('at least 10 characters'); if (!/[A-Za-z]/.test(p)) r.push('a letter'); if (!/\d/.test(p)) r.push('a number'); return r; };
+const pwField = (name, label, auto, hint) => `<div class="field"><label for="${name}">${label}</label><div class="pw"><input id="${name}" name="${name}" type="password" autocomplete="${auto}" required><button type="button" data-pw aria-label="Show or hide ${label.toLowerCase()}">Show</button></div>${hint ? `<div class="hint">${hint}</div>` : ''}<div class="err" role="alert"></div></div>`;
+const textField = (name, label, type = 'text', auto = '', extra = '') => `<div class="field"><label for="${name}">${label}</label><input id="${name}" name="${name}" type="${type}" autocomplete="${auto}" ${extra}><div class="err" role="alert"></div></div>`;
+const redirectUrl = p => `${location.origin}${location.pathname}?p=${p}`;
+
+function cooldownLeft(key) { return Math.max(0, Math.ceil(((+store.get(key) || 0) - Date.now()) / 1000)); }
+function startCooldown(key, btn, idle) {
+  const tick = () => {
+    const left = cooldownLeft(key);
+    btn.disabled = left > 0;
+    btn.textContent = left > 0 ? `${idle} in ${left}s` : idle;
+  };
+  tick();
+  timers.push(setInterval(tick, 1000));
+}
+
+/* ---------- routing ---------- */
+function route() {
+  const q = new URLSearchParams(location.search);
+  let name = q.get('p') || 'home';
+  if (q.get('reference') || q.get('trxref')) name = 'payment-result';
+  return { name, q };
+}
+function go(name, params = {}, replace = false) {
+  const q = new URLSearchParams({ p: name, ...params });
+  const url = name === 'home' && !Object.keys(params).length ? location.pathname : `${location.pathname}?${q}`;
+  history[replace ? 'replaceState' : 'pushState']({}, '', url);
+  return render();
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-link]');
+  if (a && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button)) {
+    e.preventDefault();
+    const u = new URL(a.href); history.pushState({}, '', u.pathname + u.search); render();
+  }
+  const pw = e.target.closest('[data-pw]');
+  if (pw) { const i = pw.parentElement.querySelector('input'); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; pw.textContent = show ? 'Hide' : 'Show'; }
+  if (e.target.closest('#burger')) { const l = $('nav.links'); const o = l.classList.toggle('open'); $('#burger').setAttribute('aria-expanded', o); }
+});
+window.addEventListener('popstate', render);
+
+/* ---------- chrome ---------- */
+function renderBanner() {
+  $('#banner').innerHTML = CONFIGURED ? '' : '<div class="bar">Preview mode: the backend is not connected yet. Sign-up, login and payments switch on after setup.</div>';
+}
+function renderNav() {
+  const { name } = route(), u = S.user && S.user.email_confirmed_at;
+  const L = (p, t) => `<a href="?p=${p}" data-link ${name === p ? 'aria-current="page"' : ''}>${t}</a>`;
+  $('#nav').innerHTML = `<a class="brand" href="?p=home" data-link>${'<i>' + ICON.key + '</i>'}${esc(CONFIG.APP_NAME)}</a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">${ICON.menu}</button>
+  <nav class="links" id="navlinks" aria-label="Main">
+   ${u ? L('dashboard','Dashboard') + L('pricing','Pricing') + L('billing','Billing') + L('settings','Settings') + '<button class="lnk" id="logout">Log out</button>'
+       : L('pricing','Pricing') + L('login','Log in') + '<a class="btn primary sm" href="?p=signup" data-link>Create account</a>'}
+  </nav>`;
+  const lo = $('#logout'); if (lo) lo.onclick = logout;
+}
+function renderFooter() {
+  $('#foot').innerHTML = `<div class="fgrid">
+   <div><a class="brand" href="?p=home" data-link style="color:var(--tx)">${esc(CONFIG.APP_NAME)}</a><p style="margin-top:10px;max-width:34ch">One verified account, with plans that unlock access as you grow.</p></div>
+   <div><h4>Product</h4><a href="?p=pricing" data-link>Pricing</a><a href="?p=signup" data-link>Create account</a><a href="?p=login" data-link>Log in</a></div>
+   <div><h4>Legal</h4><a href="?p=terms" data-link>Terms of Service</a><a href="?p=privacy" data-link>Privacy Policy</a></div>
+   <div><h4>Contact</h4><a href="mailto:${esc(CONFIG.SUPPORT_EMAIL)}">${esc(CONFIG.SUPPORT_EMAIL)}</a><span>${esc(CONFIG.ADDRESS)}</span></div>
+  </div><div class="copy">&copy; ${new Date().getFullYear()} ${esc(CONFIG.COMPANY)}. All rights reserved.</div>`;
+}
+
+async function logout() {
+  try { await sb.auth.signOut(); } catch(_) {}
+  try { localStorage.removeItem('ca_remember'); } catch(_) {}
+  S.user = null; S.next = null; store.del('ca_plan');
+  toast('You are logged out.', 'ok');
+  go('home');
+}
+
+/* ---------- shared view pieces ---------- */
+const setupNeeded = () => `<section class="auth setup"><div class="panel">
+ <div class="bigicon">${ICON.lock}</div><h1>Connect your backend</h1>
+ <p class="sub">This page needs Supabase. Nothing here is simulated, so it stays off until the backend is connected.</p>
+ <ol><li>Create a Supabase project and run <code>supabase/schema.sql</code>.</li>
+ <li>Put the project URL and anon key in the <code>CONFIG</code> block at the top of this file's script.</li>
+ <li>Deploy the Edge Functions and set the Paystack secrets (see <code>SETUP.md</code>).</li></ol></div></section>`;
+
+const badgeFor = s => ({success:['ok','Successful'], pending:['wn','Pending'], failed:['er','Failed'], abandoned:['','Abandoned']}[s] || ['', s]);
+const subBadge = s => ({active:['ok','Active'], past_due:['wn','Payment overdue'], canceled:['er','Canceled'], expired:['','Ended']}[s] || ['', s]);
+const limitLabel = {projects:'Projects', requests_per_month:'Requests per month'};
+const limitVal = v => v === -1 ? 'Unlimited' : Number(v).toLocaleString('en-NG');
+
+function planCard(p, action) {
+  return `<article class="plan ${p.highlighted ? 'hl' : ''}">
+  ${p.highlighted ? '<span class="tag">Most popular</span>' : ''}
+  <h3>${esc(p.name)}</h3><p class="mu">${esc(p.tagline || '')}</p>
+  <div class="price">${p.price_kobo ? money(p.price_kobo, p.currency) : money(0, p.currency)} <small>${p.price_kobo ? perLabel(p) : 'free forever'}</small></div>
+  <ul>${(p.features || []).map(f => `<li>${ICON.check}<span>${esc(f)}</span></li>`).join('')}</ul>
+  ${action}</article>`;
+}
+
+/* ---------- pages ---------- */
+const PAGES = {};
+
+PAGES.home = {
+  title: 'Access that grows with you',
+  load: () => getPlans(),
+  html: plans => `
+  <section class="hero"><div class="wrap grid">
+   <div>
+    <h1 class="display">One account. Access that unlocks as you grow.</h1>
+    <p class="lead">${esc(CONFIG.APP_NAME)} is your membership for ${esc(CONFIG.COMPANY)}'s tools. Verify your email, pick the plan that fits your usage, and see exactly what you can use from your dashboard.</p>
+    <div class="cta"><a class="btn primary" href="?p=signup" data-link>Create free account</a><a class="btn ghost" href="?p=pricing" data-link>See plans</a></div>
+   </div>
+   <aside class="pass" aria-label="How plans unlock access"><h3>Your access</h3>
+    ${plans.map((p, i) => `<div class="tier u${Math.min(i, 2)}"><span class="dot"><span class="shut">${ICON.lock}</span><span class="open">${ICON.unlock}</span></span><div><strong>${esc(p.name)}</strong><div class="hint" style="margin:0">${esc(p.tagline || '')}</div></div><span class="amt">${p.price_kobo ? money(p.price_kobo, p.currency) : 'Free'}</span></div>`).join('')}
+   </aside>
+  </div></section>
+  <section class="band"><div class="wrap">
+   <h2>What you get</h2>
+   <div class="cols">
+    <div><h3>One account</h3><p>A single login for everything. Your profile, plan and receipts all live in one place.</p></div>
+    <div><h3>Plans that match your usage</h3><p>Start free. Move up when you need higher limits, and step down whenever you like.</p></div>
+    <div><h3>Billing you can read</h3><p>Every payment, pending or complete, is listed with its status and a receipt-style record.</p></div>
+   </div>
+  </div></section>
+  <section class="band"><div class="wrap">
+   <h2>Built so access can't be faked</h2>
+   <ul class="facts">
+    <li>${ICON.check}<span>Your email is verified before anything opens. Unverified accounts cannot sign in to protected pages.</span></li>
+    <li>${ICON.check}<span>Paid access starts only after our server confirms the payment with Paystack, never from a button click in your browser.</span></li>
+    <li>${ICON.check}<span>Your records are protected by database row-level security, so only you can read your own data.</span></li>
+    <li>${ICON.check}<span>Passwords are hashed by the authentication service. We never see or store them in plain text.</span></li>
+   </ul>
+  </div></section>
+  <section class="band"><div class="wrap">
+   <h2>Get started in three steps</h2>
+   <ol class="steps">
+    <li><b>Create your account</b><span>Enter your name, email and a password.</span></li>
+    <li><b>Verify your email</b><span>Open the link we send to your inbox.</span></li>
+    <li><b>Choose a plan</b><span>Stay on Free or upgrade with Paystack checkout.</span></li>
+   </ol>
+  </div></section>
+  <section class="band endcta"><div class="wrap"><h2>Ready when you are</h2><p>Free to start. No card needed.</p><a class="btn primary" href="?p=signup" data-link>Create free account</a></div></section>`
+};
+
+PAGES.pricing = {
+  title: 'Pricing',
+  load: async () => {
+    const plans = await getPlans();
+    let ent = null;
+    if (CONFIGURED && S.user && S.user.email_confirmed_at) ent = await getEnt();
+    return { plans, ent };
+  },
+  html: ({ plans, ent }) => {
+    const cur = ent ? planOf(plans, ent.plan_id) : null;
+    const btn = p => {
+      if (cur) {
+        if (p.id === cur.id) return p.price_kobo ? `<button class="btn primary block" data-choose="${p.id}">Renew ${esc(p.name)}</button><p class="hint" style="text-align:center">Your current plan</p>` : '<button class="btn ghost block" disabled>Current plan</button>';
+        if (p.tier > cur.tier) return `<button class="btn primary block" data-choose="${p.id}">Upgrade to ${esc(p.name)}</button>`;
+        return `<button class="btn ghost block" data-choose="${p.id}">Downgrade to ${esc(p.name)}</button>`;
+      }
+      return `<button class="btn ${p.highlighted ? 'primary' : 'ghost'} block" data-choose="${p.id}">${p.price_kobo ? 'Choose ' + esc(p.name) : 'Start for free'}</button>`;
+    };
+    return `<div class="wrap"><div class="pagehead"><h1 class="display" style="font-size:clamp(34px,5vw,56px)">Simple pricing in naira</h1>
+     <p>Start free, upgrade when you need more. Prices are in ${esc(plans[0].currency)} and include everything shown.</p></div>
+     ${S.plansFallback ? '<div class="alert in">Showing sample prices. Real prices load from your database once the backend is connected.</div>' : ''}
+     <div class="plans">${plans.map(p => planCard(p, btn(p))).join('')}</div></div>`;
+  },
+  mount: ({ plans, ent }) => {
+    $$('[data-choose]').forEach(b => b.onclick = async () => {
+      const p = planOf(plans, b.dataset.choose);
+      if (!CONFIGURED) { go('login'); return; }
+      if (!S.user) { store.set('ca_plan', p.id); go('signup', { plan: p.id }); return; }
+      if (!S.user.email_confirmed_at) { go('verify-email'); return; }
+      const cur = planOf(plans, ent.plan_id);
+      if (p.tier >= cur.tier && p.price_kobo > 0) { go('checkout', { plan: p.id }); return; }
+      await downgrade(p, ent, plans);
+    });
+  }
+};
+
+async function downgrade(target, ent, plans) {
+  if (ent.plan_id === 'free') { toast('You are already on the Free plan.'); return; }
+  const ok = await confirmDlg({
+    title: 'Schedule your downgrade?',
+    body: `Your ${planOf(plans, ent.plan_id).name} access continues until ${fdate(ent.current_period_end)}. After that your account moves to Free.${target.id !== 'free' ? ` You can then subscribe to ${target.name} from the pricing page.` : ''}`,
+    ok: 'Schedule downgrade'
+  });
+  if (!ok) return;
+  const { error } = await callFn('paystack-cancel', { action: 'cancel' });
+  if (error) { toast(error, 'er'); return; }
+  toast('Downgrade scheduled.', 'ok'); go('billing');
+}
+
+/* --- sign up --- */
+PAGES.signup = {
+  title: 'Create account', guest: true, needsBackend: true,
+  html: () => `<section class="auth"><div class="panel"><h1>Create your account</h1><p class="sub">Free to start. We'll email you a link to verify your address.</p>
+   <form id="f"><div class="alert er form-error" role="alert" hidden></div>
+   ${textField('name', 'Full name', 'text', 'name', 'required maxlength="80"')}
+   ${textField('email', 'Email address', 'email', 'email', 'required maxlength="254"')}
+   ${pwField('password', 'Password', 'new-password', 'At least 10 characters, with a letter and a number.')}
+   ${pwField('confirm', 'Confirm password', 'new-password')}
+   <div class="field"><label class="check"><input type="checkbox" name="terms"><span>I agree to the <a href="?p=terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="?p=privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label><div class="err" role="alert"></div></div>
+   <button class="btn primary block" type="submit" data-busy="Creating account">Create account</button></form>
+   <p class="links2">Already have an account? <a href="?p=login" data-link>Log in</a></p></div></section>`,
+  mount: () => {
+    const f = $('#f');
+    wireForm(f, async () => {
+      const name = f.name.value.trim(), email = f.email.value.trim().toLowerCase(), pw = f.password.value, cf = f.confirm.value;
+      let ok = true;
+      if (name.length < 2 || name.length > 80) ok = bad(f, 'name', 'Enter your full name (2 to 80 characters).');
+      if (!EMAIL_RE.test(email)) ok = bad(f, 'email', 'Enter a valid email address.');
+      const iss = pwIssues(pw); if (iss.length) ok = bad(f, 'password', 'Your password needs ' + iss.join(', ') + '.');
+      if (cf !== pw) ok = bad(f, 'confirm', 'Passwords do not match.');
+      if (!f.terms.checked) ok = bad(f, 'terms', 'Accept the Terms and Privacy Policy to continue.');
+      if (!ok) { focusBad(f); return; }
+      const { data, error } = await sb.auth.signUp({ email, password: pw, options: { data: { full_name: name, terms_accepted_at: new Date().toISOString() }, emailRedirectTo: redirectUrl('verified') } });
+      if (error) throw new Error(authMsg(error));
+      if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) throw new Error('An account with this email already exists. Log in instead, or reset your password.');
+      if (data.session) { await sb.auth.signOut(); throw new Error('This project lets people sign in without verifying their email. Turn on "Confirm email" in Supabase Auth settings before accepting sign-ups.'); }
+      S.pending = email; store.set('ca_pending', email);
+      go('verify-email', { email });
+    });
+  }
+};
+
+/* --- verify instructions --- */
+PAGES['verify-email'] = {
+  title: 'Check your inbox', needsBackend: true,
+  html: (_, q) => {
+    const email = q.get('email') || S.pending || store.get('ca_pending') || '';
+    return `<section class="auth"><div class="panel"><div class="bigicon">${ICON.mail}</div><h1>Check your inbox</h1>
+    <p class="sub">${email ? `We sent a verification link to <strong>${esc(email)}</strong>.` : 'We sent you a verification link.'} Open it to activate your account. It can take a minute, and it may land in spam.</p>
+    <div class="alert er form-error" id="verr" hidden role="alert"></div><div class="alert ok" id="vok" hidden></div>
+    ${email ? '<button class="btn ghost block" id="resend"></button>' : ''}
+    <p class="links2"><a href="?p=login" data-link>I've verified, log in</a></p>
+    <p class="links2" style="margin-top:8px">Wrong address? <a href="?p=signup" data-link>Start again</a></p></div></section>`;
+  },
+  mount: (_, q) => {
+    const email = q.get('email') || S.pending || store.get('ca_pending') || '';
+    const b = $('#resend'); if (!b) return;
+    const key = 'ca_resend_' + email;
+    startCooldown(key, b, 'Resend email');
+    b.onclick = async () => {
+      if (cooldownLeft(key) > 0) return;
+      b.disabled = true; $('#verr').hidden = true; $('#vok').hidden = true;
+      const { error } = await sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: redirectUrl('verified') } });
+      if (error) { $('#verr').textContent = authMsg(error); $('#verr').hidden = false; }
+      else { $('#vok').textContent = 'Verification email sent again.'; $('#vok').hidden = false; }
+      store.set(key, String(Date.now() + CONFIG.RESEND_COOLDOWN_SECONDS * 1000));
+      startCooldown(key, b, 'Resend email');
+    };
+  }
+};
+
+PAGES.verified = {
+  title: 'Email verified',
+  html: () => {
+    const ok = S.user && S.user.email_confirmed_at;
+    return `<section class="auth"><div class="panel"><div class="bigicon ${ok ? 'ok' : ''}">${ok ? ICON.ok : ICON.mail}</div>
+    <h1>${ok ? 'Email verified' : 'One more step'}</h1>
+    <p class="sub">${ok ? 'Your account is active. You can head to your dashboard.' : 'If you just opened the link in your email, log in to continue.'}</p>
+    <a class="btn primary block" href="?p=${ok ? 'dashboard' : 'login'}" data-link>${ok ? 'Go to dashboard' : 'Log in'}</a></div></section>`;
+  },
+  mount: () => { const pp = store.get('ca_plan'); if (pp && S.user && S.user.email_confirmed_at && pp !== 'free') { store.del('ca_plan'); go('checkout', { plan: pp }, true); } }
+};
+
+/* --- login --- */
+PAGES.login = {
+  title: 'Log in', guest: true, needsBackend: true,
+  html: () => `<section class="auth"><div class="panel"><h1>Welcome back</h1><p class="sub">Log in to your dashboard.</p>
+   ${store.get('ca_flash') ? `<div class="alert ok">${esc(store.get('ca_flash'))}</div>` : ''}
+   <form id="f"><div class="alert er form-error" role="alert" hidden></div>
+   ${textField('email', 'Email address', 'email', 'email', 'required')}
+   ${pwField('password', 'Password', 'current-password')}
+   <div class="row" style="margin-bottom:18px"><label class="check"><input type="checkbox" name="remember" checked><span>Keep me logged in</span></label><a href="?p=forgot-password" data-link style="font-size:14px">Forgot password?</a></div>
+   <button class="btn primary block" type="submit" data-busy="Logging in">Log in</button></form>
+   <p class="links2">New here? <a href="?p=signup" data-link>Create an account</a></p></div></section>`,
+  mount: () => {
+    store.del('ca_flash');
+    const f = $('#f');
+    wireForm(f, async () => {
+      const email = f.email.value.trim().toLowerCase(), pw = f.password.value;
+      let ok = true;
+      if (!EMAIL_RE.test(email)) ok = bad(f, 'email', 'Enter a valid email address.');
+      if (!pw) ok = bad(f, 'password', 'Enter your password.');
+      if (!ok) { focusBad(f); return; }
+      try { localStorage.setItem('ca_remember', f.remember.checked ? '1' : '0'); } catch(_) {}
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+      if (error) {
+        if (error.code === 'email_not_confirmed' || /not confirmed/i.test(error.message)) { S.pending = email; store.set('ca_pending', email); go('verify-email', { email }); return; }
+        throw new Error(authMsg(error));
+      }
+      if (!data.user.email_confirmed_at) { await sb.auth.signOut(); S.pending = email; go('verify-email', { email }); return; }
+      S.user = data.user;
+      const pp = store.get('ca_plan'); store.del('ca_plan');
+      const n = S.next; S.next = null;
+      if (pp && pp !== 'free') return go('checkout', { plan: pp }, true);
+      if (n) return go(n.name, n.params, true);
+      go('dashboard', {}, true);
+    });
+  }
+};
+
+/* --- forgot / reset --- */
+PAGES['forgot-password'] = {
+  title: 'Reset password', guest: true, needsBackend: true,
+  html: () => `<section class="auth"><div class="panel"><h1>Reset your password</h1><p class="sub">Enter your email and we'll send a reset link if an account exists.</p>
+   <form id="f"><div class="alert er form-error" role="alert" hidden></div><div class="alert ok" id="sent" hidden>If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.</div>
+   ${textField('email', 'Email address', 'email', 'email', 'required')}
+   <button class="btn primary block" type="submit" data-busy="Sending link" id="sendbtn">Send reset link</button></form>
+   <p class="links2"><a href="?p=login" data-link>Back to log in</a></p></div></section>`,
+  mount: () => {
+    const f = $('#f'), key = 'ca_reset_cd';
+    wireForm(f, async () => {
+      if (cooldownLeft(key) > 0) throw new Error(`Wait ${cooldownLeft(key)} seconds before requesting another link.`);
+      const email = f.email.value.trim().toLowerCase();
+      if (!EMAIL_RE.test(email)) { bad(f, 'email', 'Enter a valid email address.'); focusBad(f); return; }
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl('reset-password') });
+      if (error && /rate|too many/i.test(error.message)) throw new Error(authMsg(error));
+      store.set(key, String(Date.now() + CONFIG.RESEND_COOLDOWN_SECONDS * 1000));
+      $('#sent').hidden = false;
+    });
+  }
+};
+
+PAGES['reset-password'] = {
+  title: 'Choose a new password', needsBackend: true,
+  html: () => S.user ? `<section class="auth"><div class="panel"><h1>Choose a new password</h1><p class="sub">Pick a password you haven't used elsewhere.</p>
+   <form id="f"><div class="alert er form-error" role="alert" hidden></div>
+   ${pwField('password', 'New password', 'new-password', 'At least 10 characters, with a letter and a number.')}
+   ${pwField('confirm', 'Confirm new password', 'new-password')}
+   <button class="btn primary block" type="submit" data-busy="Saving">Save new password</button></form></div></section>`
+   : `<section class="auth"><div class="panel"><div class="bigicon er">${ICON.x}</div><h1>This link has expired</h1><p class="sub">Reset links work once and expire quickly. Request a new one to continue.</p><a class="btn primary block" href="?p=forgot-password" data-link>Request a new link</a></div></section>`,
+  mount: () => {
+    const f = $('#f'); if (!f) return;
+    wireForm(f, async () => {
+      const pw = f.password.value; let ok = true;
+      const iss = pwIssues(pw); if (iss.length) ok = bad(f, 'password', 'Your password needs ' + iss.join(', ') + '.');
+      if (f.confirm.value !== pw) ok = bad(f, 'confirm', 'Passwords do not match.');
+      if (!ok) { focusBad(f); return; }
+      const { error } = await sb.auth.updateUser({ password: pw });
+      if (error) throw new Error(authMsg(error));
+      await sb.auth.signOut(); S.user = null;
+      store.set('ca_flash', 'Password updated. Log in with your new password.');
+      go('login', {}, true);
+    });
+  }
+};
+
+/* --- dashboard --- */
+PAGES.dashboard = {
+  title: 'Dashboard', auth: true,
+  load: async () => {
+    const [prof, ent, plans, tx] = await Promise.all([
+      sb.from('profiles').select('full_name,email,phone,company,created_at').eq('id', S.user.id).maybeSingle(),
+      getEnt(), getPlans(),
+      sb.from('payment_transactions').select('id,reference,plan_id,amount_kobo,currency,status,created_at').order('created_at', { ascending: false }).limit(5)
+    ]);
+    return { prof: prof.data, ent, plans, tx: tx.data || [] };
+  },
+  html: ({ prof, ent, plans, tx }) => {
+    const first = ((prof && prof.full_name) || (S.user.user_metadata && S.user.user_metadata.full_name) || '').split(' ')[0] || 'there';
+    const cur = planOf(plans, ent.plan_id) || plans[0], top = plans[plans.length - 1];
+    const higher = plans.filter(p => p.tier > cur.tier);
+    const [sc, sl] = subBadge(ent.status);
+    const lim = Object.entries(cur.limits || {});
+    return `<div class="wrap dash"><h1>Welcome, ${esc(first)}</h1><p class="mu">Here is your account at a glance.</p>
+    <div class="dgrid">
+     <div class="box c4"><div class="k">Current plan</div><div class="v">${esc(cur.name)}</div>
+       ${cur.id !== 'free' ? `<span class="badge ${sc}">${sl}</span><p class="hint">${ent.cancel_at_period_end ? 'Ends' : 'Active until'} ${fdate(ent.current_period_end)}</p>` : `<span class="badge ok">Active</span>${ent.current_period_end ? `<p class="hint">Your paid plan ended on ${fdate(ent.current_period_end)}.</p>` : ''}`}
+       ${cur.id !== top.id ? '<div style="margin-top:14px"><a class="btn primary sm" href="?p=pricing" data-link>Upgrade plan</a></div>' : ''}</div>
+     <div class="box c4"><div class="k">Email</div><div class="v" style="font-size:18px;word-break:break-all">${esc(S.user.email)}</div>
+       <span class="badge ${S.user.email_confirmed_at ? 'ok' : 'wn'}">${S.user.email_confirmed_at ? 'Verified' : 'Not verified'}</span></div>
+     <div class="box c4"><div class="k">Usage limits</div>
+       ${lim.length ? `<ul class="flist" style="margin-top:10px">${lim.map(([k, v]) => `<li><span class="mu">${esc(limitLabel[k] || k.replace(/_/g, ' '))}</span>&nbsp;<strong>${limitVal(v)}</strong></li>`).join('')}</ul>` : '<p class="hint">No limits set.</p>'}</div>
+     <div class="box c6"><h3>Your features</h3><ul class="flist">
+       ${(cur.features || []).map(f => `<li>${ICON.check}<span>${esc(f)}</span></li>`).join('')}
+       ${higher.flatMap(p => (p.features || []).filter(f => !/^Everything in/.test(f)).map(f => `<li class="lock">${ICON.lock}<span>${esc(f)} <span class="badge">${esc(p.name)}</span></span></li>`)).join('')}</ul></div>
+     <div class="box c6"><div class="row" style="margin-bottom:14px"><h3 style="margin:0">Recent payments</h3><a href="?p=billing" data-link style="font-size:14px">View all</a></div>
+       ${tx.length ? `<table class="tbl"><thead><tr><th>Date</th><th>Plan</th><th>Amount</th><th>Status</th></tr></thead><tbody>${tx.map(t => { const [c, l] = badgeFor(t.status); return `<tr><td data-l="Date">${fdate(t.created_at)}</td><td data-l="Plan">${esc((planOf(plans, t.plan_id) || {}).name || t.plan_id)}</td><td data-l="Amount">${money(t.amount_kobo, t.currency)}</td><td data-l="Status"><span class="badge ${c}">${l}</span></td></tr>`; }).join('')}</tbody></table>` : '<p class="empty">No payments yet. Paid plans appear here once you subscribe.</p>'}</div>
+     <div class="box c12"><div class="row"><div><h3>Account</h3><p class="mu">Update your profile, change your password, or manage billing.</p></div><div class="row"><a class="btn ghost sm" href="?p=settings" data-link>Account settings</a><a class="btn ghost sm" href="?p=billing" data-link>Billing</a><button class="btn ghost sm" id="lo2">Log out</button></div></div></div>
+    </div></div>`;
+  },
+  mount: () => { $('#lo2').onclick = logout; }
+};
+
+/* --- checkout --- */
+PAGES.checkout = {
+  title: 'Checkout', auth: true,
+  load: async q => ({ plans: await getPlans(), ent: await getEnt(), id: q.get('plan') }),
+  html: ({ plans, ent, id }) => {
+    const p = planOf(plans, id);
+    if (!p || p.price_kobo <= 0) return `<section class="auth"><div class="panel"><div class="bigicon er">${ICON.x}</div><h1>Choose a plan</h1><p class="sub">That plan isn't available for checkout.</p><a class="btn primary block" href="?p=pricing" data-link>See plans</a></div></section>`;
+    const cur = planOf(plans, ent.plan_id);
+    const note = cur.tier > p.tier ? `<div class="alert wn">You're on ${esc(cur.name)}. Paying for ${esc(p.name)} now replaces it right away, without credit for unused time. To switch at the end of your period instead, schedule a downgrade from the pricing page.</div>` : cur.id === p.id ? `<div class="alert in">This renews ${esc(p.name)} and adds another ${p.billing_interval} after your current period ends.</div>` : '';
+    return `<div class="wrap"><div class="checkout">
+     <div class="box"><h1 style="font-size:28px;margin-bottom:6px">Confirm your plan</h1><p class="mu" style="margin-bottom:16px">${esc(p.name)}: ${esc(p.tagline || '')}</p>${note}
+      <ul class="flist">${(p.features || []).map(f => `<li>${ICON.check}<span>${esc(f)}</span></li>`).join('')}</ul></div>
+     <div class="box"><h3>Summary</h3>
+      <div class="sumrow"><span>${esc(p.name)} (${p.billing_interval})</span><span>${money(p.price_kobo, p.currency)}</span></div>
+      <div class="sumrow"><span>Total today</span><span>${money(p.price_kobo, p.currency)}</span></div>
+      <p class="hint" style="margin:10px 0 16px">Billed to ${esc(S.user.email)}. You'll pay on Paystack's secure page. Your plan activates only after Paystack confirms the payment to our server.</p>
+      <div class="alert er form-error" id="cerr" hidden role="alert"></div>
+      <button class="btn primary block" id="pay" data-plan="${esc(p.id)}">Pay ${money(p.price_kobo, p.currency)} securely</button>
+      <p class="links2"><a href="?p=pricing" data-link>Back to plans</a></p></div>
+    </div></div>`;
+  },
+  mount: () => {
+    const b = $('#pay'); if (!b) return;
+    b.onclick = async () => {
+      b.disabled = true; const l = b.innerHTML; b.innerHTML = '<span class="spin"></span> Opening checkout'; $('#cerr').hidden = true;
+      const { data, error } = await callFn('paystack-initialize', { plan_id: b.dataset.plan });
+      if (error || !data || !/^https:\/\/checkout\.paystack\.com\//.test(data.authorization_url || '')) {
+        $('#cerr').textContent = error || 'Checkout could not be started. Try again.'; $('#cerr').hidden = false;
+        b.disabled = false; b.innerHTML = l; return;
+      }
+      location.assign(data.authorization_url);
+    };
+  }
+};
+
+/* --- payment result --- */
+PAGES['payment-result'] = {
+  title: 'Payment result', auth: true,
+  html: () => `<section class="auth"><div class="panel" id="pr" aria-live="polite"><div class="bigicon"><span class="spin"></span></div><h1>Confirming your payment</h1><p class="sub">We're checking with Paystack. This usually takes a few seconds.</p></div></section>`,
+  mount: async (_, q) => {
+    const tok = renderTok, ref = q.get('reference') || q.get('trxref'), box = $('#pr');
+    const show = (kind, title, body, actions) => { if (tok !== renderTok) return; box.innerHTML = `<div class="bigicon ${kind}">${kind === 'ok' ? ICON.ok : kind === 'er' ? ICON.x : ICON.mail}</div><h1>${title}</h1><p class="sub">${body}</p>${actions}`; };
+    if (!ref) { show('er', 'No payment found', 'Open this page from Paystack after paying, or check your billing history.', '<a class="btn primary block" href="?p=billing" data-link>View billing</a>'); return; }
+    history.replaceState({}, '', `${location.pathname}?p=payment-result&reference=${encodeURIComponent(ref)}`);
+    let res = null;
+    for (let i = 0; i < 6; i++) {
+      const { data, error } = await callFn('paystack-verify', { reference: ref });
+      if (tok !== renderTok) return;
+      if (error) { show('er', 'We could not confirm this yet', esc(error), '<a class="btn primary block" href="?p=billing" data-link>Check billing</a>'); return; }
+      res = data; if (res.status !== 'pending') break;
+      await sleep(2500); if (tok !== renderTok) return;
+    }
+    const plans = await getPlans();
+    const name = res && res.plan_id ? (planOf(plans, res.plan_id) || {}).name : '';
+    if (res.status === 'success') show('ok', 'Payment confirmed', `Your ${esc(name)} plan is active. Thank you.`, '<a class="btn primary block" href="?p=dashboard" data-link>Go to dashboard</a>');
+    else if (res.status === 'abandoned') show('er', 'Payment not completed', 'The checkout was closed before payment finished. You have not been charged.', '<a class="btn primary block" href="?p=pricing" data-link>Back to plans</a>');
+    else if (res.status === 'failed') show('er', 'Payment failed', 'Paystack could not complete this payment. You have not received a paid plan. Try again or use another payment method.', '<a class="btn primary block" href="?p=pricing" data-link>Try again</a>');
+    else show('', 'Still waiting for confirmation', 'Paystack has not confirmed this payment yet. Your plan activates automatically once it does. You can check the status in billing.', '<a class="btn primary block" href="?p=billing" data-link>Open billing</a>');
+  }
+};
+
+/* --- billing --- */
+PAGES.billing = {
+  title: 'Billing', auth: true,
+  load: async () => {
+    const [ent, plans, tx, inv] = await Promise.all([
+      getEnt(), getPlans(),
+      sb.from('payment_transactions').select('id,reference,plan_id,amount_kobo,currency,status,channel,created_at,paid_at').order('created_at', { ascending: false }).limit(50),
+      sb.from('billing_history').select('id,description,amount_kobo,currency,period_start,period_end,created_at').order('created_at', { ascending: false }).limit(50)
+    ]);
+    return { ent, plans, tx: tx.data || [], inv: inv.data || [] };
+  },
+  html: ({ ent, plans, tx, inv }) => {
+    const cur = planOf(plans, ent.plan_id) || plans[0], [sc, sl] = subBadge(ent.status), paid = cur.id !== 'free';
+    return `<div class="wrap dash"><h1>Billing</h1><p class="mu">Your subscription, payments and receipts.</p>
+    <div class="dgrid">
+     <div class="box c12"><div class="row"><div><div class="k">Subscription</div><div class="v" style="margin-bottom:6px">${esc(cur.name)} <span class="badge ${sc}" style="vertical-align:middle">${sl}</span></div>
+       ${paid ? `<p class="mu">${ent.cancel_at_period_end ? 'Scheduled to end on' : ent.is_recurring ? 'Renews on' : 'Access until'} <strong>${fdate(ent.current_period_end)}</strong></p>` : '<p class="mu">You are on the free plan.</p>'}</div>
+       <div class="row"><a class="btn ghost sm" href="?p=pricing" data-link>Change plan</a>
+       ${paid && !ent.cancel_at_period_end ? '<button class="btn danger sm" id="cancel">Cancel subscription</button>' : ''}
+       ${paid && ent.cancel_at_period_end && !ent.is_recurring ? '<button class="btn primary sm" id="resume">Keep my plan</button>' : ''}</div></div>
+       ${paid && ent.cancel_at_period_end ? `<div class="alert wn" style="margin:16px 0 0">Your plan will not continue after ${fdate(ent.current_period_end)}. You keep full access until then.</div>` : ''}</div>
+     <div class="box c12"><h3>Payment history</h3>${tx.length ? `<table class="tbl"><thead><tr><th>Date</th><th>Plan</th><th>Amount</th><th>Method</th><th>Status</th><th></th></tr></thead><tbody>
+       ${tx.map(t => { const [c, l] = badgeFor(t.status); return `<tr><td data-l="Date">${fdate(t.created_at)}</td><td data-l="Plan">${esc((planOf(plans, t.plan_id) || {}).name || t.plan_id)}</td><td data-l="Amount">${money(t.amount_kobo, t.currency)}</td><td data-l="Method">${esc(t.channel || 'n/a')}</td><td data-l="Status"><span class="badge ${c}">${l}</span></td><td>${t.status === 'pending' ? `<button class="btn ghost sm" data-check="${esc(t.reference)}">Check status</button>` : ''}</td></tr>`; }).join('')}</tbody></table>` : '<p class="empty">No payments yet.</p>'}</div>
+     <div class="box c12"><h3>Billing history</h3>${inv.length ? `<table class="tbl"><thead><tr><th>Date</th><th>Description</th><th>Period</th><th>Amount</th></tr></thead><tbody>
+       ${inv.map(i => `<tr><td data-l="Date">${fdate(i.created_at)}</td><td data-l="Description">${esc(i.description)}</td><td data-l="Period">${fdate(i.period_start)} to ${fdate(i.period_end)}</td><td data-l="Amount">${money(i.amount_kobo, i.currency)}</td></tr>`).join('')}</tbody></table>` : '<p class="empty">Receipts appear here after a successful payment.</p>'}</div>
+    </div></div>`;
+  },
+  mount: ({ ent, plans }) => {
+    const c = $('#cancel'), r = $('#resume');
+    if (c) c.onclick = async () => {
+      const ok = await confirmDlg({ title: 'Cancel your subscription?', body: `You keep ${planOf(plans, ent.plan_id).name} access until ${fdate(ent.current_period_end)}. After that your account moves to Free.`, ok: 'Cancel subscription', danger: true });
+      if (!ok) return;
+      c.disabled = true;
+      const { error } = await callFn('paystack-cancel', { action: 'cancel' });
+      if (error) { toast(error, 'er'); c.disabled = false; return; }
+      toast('Cancellation scheduled.', 'ok'); render();
+    };
+    if (r) r.onclick = async () => {
+      r.disabled = true;
+      const { error } = await callFn('paystack-cancel', { action: 'resume' });
+      if (error) { toast(error, 'er'); r.disabled = false; return; }
+      toast('Your plan will continue.', 'ok'); render();
+    };
+    $$('[data-check]').forEach(b => b.onclick = async () => {
+      b.disabled = true; b.innerHTML = '<span class="spin"></span>';
+      const { data, error } = await callFn('paystack-verify', { reference: b.dataset.check });
+      if (error) toast(error, 'er'); else toast(data.status === 'success' ? 'Payment confirmed.' : 'Status: ' + data.status, data.status === 'success' ? 'ok' : '');
+      render();
+    });
+  }
+};
+
+/* --- settings --- */
+PAGES.settings = {
+  title: 'Account settings', auth: true,
+  load: async () => (await sb.from('profiles').select('full_name,phone,company,created_at').eq('id', S.user.id).maybeSingle()).data || {},
+  html: p => `<div class="wrap dash"><h1>Account settings</h1><p class="mu">Manage your profile and security.</p>
+   <div class="dgrid">
+    <div class="box c6"><h3>Profile</h3><form id="pf"><div class="alert er form-error" role="alert" hidden></div>
+     ${textField('full_name', 'Full name', 'text', 'name', `required maxlength="80" value="${esc(p.full_name)}"`)}
+     <div class="field"><label>Email address</label><input type="email" value="${esc(S.user.email)}" disabled><div class="hint"><span class="badge ${S.user.email_confirmed_at ? 'ok' : 'wn'}">${S.user.email_confirmed_at ? 'Verified' : 'Not verified'}</span></div></div>
+     ${textField('phone', 'Phone (optional)', 'tel', 'tel', `maxlength="20" value="${esc(p.phone)}"`)}
+     ${textField('company', 'Company (optional)', 'text', 'organization', `maxlength="120" value="${esc(p.company)}"`)}
+     <button class="btn primary" type="submit" data-busy="Saving">Save changes</button></form></div>
+    <div class="box c6"><h3>Change password</h3><form id="pw"><div class="alert er form-error" role="alert" hidden></div>
+     ${pwField('password', 'New password', 'new-password', 'At least 10 characters, with a letter and a number.')}
+     ${pwField('confirm', 'Confirm new password', 'new-password')}
+     <button class="btn primary" type="submit" data-busy="Updating">Update password</button></form>
+     <hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+     <h3>Sessions</h3><p class="mu" style="margin:6px 0 14px">Log out of this device and every other device where you're signed in.</p>
+     <button class="btn ghost sm" id="global">Log out everywhere</button></div>
+   </div></div>`,
+  mount: () => {
+    const pf = $('#pf');
+    wireForm(pf, async () => {
+      const full_name = pf.full_name.value.trim(), phone = pf.phone.value.trim(), company = pf.company.value.trim();
+      let ok = true;
+      if (full_name.length < 2 || full_name.length > 80) ok = bad(pf, 'full_name', 'Enter your full name (2 to 80 characters).');
+      if (phone && !/^\+?[0-9 \-]{7,20}$/.test(phone)) ok = bad(pf, 'phone', 'Use digits, spaces or dashes, for example +234 801 234 5678.');
+      if (!ok) { focusBad(pf); return; }
+      const { error } = await sb.from('profiles').update({ full_name, phone: phone || null, company: company || null }).eq('id', S.user.id);
+      if (error) throw new Error('Could not save your profile. Try again.');
+      await sb.auth.updateUser({ data: { full_name } });
+      toast('Profile saved.', 'ok');
+    });
+    const pw = $('#pw');
+    wireForm(pw, async () => {
+      const v = pw.password.value; let ok = true;
+      const iss = pwIssues(v); if (iss.length) ok = bad(pw, 'password', 'Your password needs ' + iss.join(', ') + '.');
+      if (pw.confirm.value !== v) ok = bad(pw, 'confirm', 'Passwords do not match.');
+      if (!ok) { focusBad(pw); return; }
+      const { error } = await sb.auth.updateUser({ password: v });
+      if (error) throw new Error(authMsg(error));
+      pw.reset(); toast('Password updated.', 'ok');
+    });
+    $('#global').onclick = async () => {
+      const ok = await confirmDlg({ title: 'Log out everywhere?', body: 'You will need to log in again on every device.', ok: 'Log out everywhere' });
+      if (!ok) return;
+      await sb.auth.signOut({ scope: 'global' }); S.user = null; go('login');
+    };
+  }
+};
+
+/* --- legal --- */
+const LEGAL = {
+  terms: ['Terms of Service', [
+    ['Agreement', `By creating an account or using ${CONFIG.APP_NAME} you agree to these terms. If you do not agree, do not use the service.`],
+    ['Your account', 'You must provide accurate information, keep your password secure, and verify your email address. You are responsible for activity on your account. Tell us promptly if you suspect unauthorised use.'],
+    ['Plans and payments', 'Paid plans are charged in Nigerian naira (NGN) unless shown otherwise, and are processed by Paystack. A paid plan starts only after the payment is confirmed by the payment provider. Prices and features may change; changes do not affect a period you have already paid for.'],
+    ['Renewals and cancellation', 'Some plans renew automatically, others are paid period by period. You can cancel at any time from your billing page. Cancelling stops future renewals and you keep access until the end of the period you have paid for. Fees for a period already started are not refunded unless required by law.'],
+    ['Acceptable use', 'Do not misuse the service: no attempts to break its security, access other people’s data, resell access without permission, or use it for unlawful purposes. We may suspend accounts that breach these terms.'],
+    ['Availability', 'We work to keep the service running but do not promise it will be uninterrupted or error-free.'],
+    ['Liability', 'To the extent the law allows, we are not liable for indirect or consequential losses. Nothing in these terms limits liability that cannot be limited by law.'],
+    ['Changes', 'We may update these terms. If a change is material we will notify you by email or in the app before it takes effect.'],
+    ['Governing law', 'These terms are governed by the laws of the Federal Republic of Nigeria.'],
+    ['Contact', `Questions about these terms: ${CONFIG.SUPPORT_EMAIL}.`]
+  ]],
+  privacy: ['Privacy Policy', [
+    ['What we collect', 'Account details you give us (name, email, optional phone and company), your plan and payment records (amount, status, date, payment channel), and basic technical data needed to keep the service secure.'],
+    ['What we do not collect', 'We never see or store your card details. Card and bank information is entered on Paystack’s checkout and handled by Paystack.'],
+    ['How we use it', 'To create and secure your account, send verification and password-reset emails, process payments and show your billing history, provide support, and meet legal obligations.'],
+    ['Who we share it with', 'Service providers that run the product: Supabase (authentication and database hosting), Paystack (payments) and our email delivery provider. We do not sell your personal data.'],
+    ['Security', 'Passwords are hashed by our authentication provider. Database row-level security restricts each account to its own records, and payment confirmation happens on our servers.'],
+    ['Retention', 'We keep account data while your account is open. Payment records are kept as long as needed for accounting and legal requirements.'],
+    ['Your rights', 'Under the Nigeria Data Protection Act 2023 and similar laws you may ask to access, correct, or delete your personal data, and to object to or restrict certain processing. Contact us to make a request.'],
+    ['Cookies and storage', 'We use browser storage only to keep you signed in (if you choose to) and to run the app. We do not use advertising trackers.'],
+    ['Changes', 'We will post updates here and, for material changes, notify you.'],
+    ['Contact', `${CONFIG.SUPPORT_EMAIL}, ${CONFIG.ADDRESS}.`]
+  ]]
+};
+for (const k of ['terms', 'privacy']) {
+  PAGES[k] = {
+    title: LEGAL[k][0],
+    html: () => `<div class="wrap"><article class="prose"><h1>${LEGAL[k][0]}</h1><p class="mu">Last updated ${esc(CONFIG.LEGAL_UPDATED)}</p>
+     <div class="alert wn note">Template text. Have a qualified lawyer review it and fill in your real company name, address and contact details before launch.</div>
+     ${LEGAL[k][1].map(([h, t]) => `<h2>${esc(h)}</h2><p>${esc(t)}</p>`).join('')}</article></div>`
+  };
+}
+
+PAGES.notfound = { title: 'Not found', html: () => `<section class="auth"><div class="panel"><h1>Page not found</h1><p class="sub">That page doesn't exist.</p><a class="btn primary block" href="?p=home" data-link>Go home</a></div></section>` };
+
+/* ---------- render ---------- */
+async function render() {
+  const tok = ++renderTok;
+  timers.forEach(clearInterval); timers = [];
+  const { name, q } = route(), def = PAGES[name] || PAGES.notfound, main = $('#main');
+
+  if (def.needsBackend || def.auth) {
+    if (!CONFIGURED) { renderNav(); main.innerHTML = setupNeeded(); document.title = `${def.title} | ${CONFIG.APP_NAME}`; return; }
+  }
+  if (CONFIGURED && S.user && !S.user.email_confirmed_at && name !== 'verify-email' && name !== 'verified') {
+    try { await sb.auth.signOut(); } catch(_) {}
+    S.user = null;
+  }
+  if (def.auth && !S.user) { S.next = { name, params: Object.fromEntries(q) }; return go('login', {}, true); }
+  if (def.guest && S.user && S.user.email_confirmed_at) return go('dashboard', {}, true);
+
+  renderNav();
+  main.innerHTML = `<div class="wrap" style="padding:80px 0;text-align:center;color:var(--mu)"><span class="spin"></span></div>`;
+  let data;
+  try { data = def.load ? await def.load(q) : undefined; }
+  catch (e) { if (tok !== renderTok) return; main.innerHTML = `<section class="auth"><div class="panel"><h1>Couldn't load this page</h1><p class="sub">Check your connection and try again.</p><button class="btn primary block" id="retry">Try again</button></div></section>`; $('#retry').onclick = render; return; }
+  if (tok !== renderTok) return;
+  document.title = `${def.title} | ${CONFIG.APP_NAME}`;
+  main.innerHTML = def.html(data, q);
+  window.scrollTo(0, 0);
+  if (def.mount) def.mount(data, q);
+}
+
+/* ---------- boot ---------- */
+(async function init() {
+  if (CONFIGURED) {
+    const { data } = await sb.auth.getSession();
+    S.user = (data.session && data.session.user) || null;
+    sb.auth.onAuthStateChange((ev, sess) => {
+      S.user = (sess && sess.user) || null;
+      if (ev === 'SIGNED_OUT' || ev === 'SIGNED_IN') setTimeout(renderNav, 0);
+    });
+  }
+  renderBanner(); renderFooter(); render();
+})();
+})();
+</script>
+</body>
+</html>

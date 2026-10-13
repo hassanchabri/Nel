@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | CHABRI</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#060912;--s1:#0c1222;--s2:#111a30;--line:#1b2745;--tx:#e7ecf8;--mu:#8c99b8;--bl:#2e6bff;--ok:#2dd4a0;--wn:#f5b544;--er:#ff5d73;--f1:'Space Grotesk',system-ui,sans-serif;--f2:system-ui,sans-serif;--mono:ui-monospace,Menlo,monospace}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:400 15px/1.6 var(--f2);min-height:100vh;-webkit-font-smoothing:antialiased}
+h1{font:700 26px var(--f1);letter-spacing:-.02em}
+.mu{color:var(--mu)}.mono{font-family:var(--mono)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+input,select{background:var(--bg);border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:9px 12px;font:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;font:600 13px var(--f2);padding:7px 13px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--tx);cursor:pointer;min-height:32px}
+.btn:hover{border-color:var(--bl)}.btn.danger{border-color:#5a2230;color:var(--er)}.btn.danger:hover{background:rgba(255,93,115,.08)}
+.btn.primary{background:var(--bl);border-color:var(--bl);color:#fff}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;color:var(--mu);font-weight:500;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
+.badge.ok{background:rgba(45,212,160,.14);color:var(--ok)}
+.badge.wn{background:rgba(245,181,68,.14);color:var(--wn)}
+.badge.er{background:rgba(255,93,115,.14);color:var(--er)}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.toasts{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:grid;gap:8px;z-index:50}
+.toast{background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:13.5px}
+.toast.er{border-color:#5a2230}.toast.ok{border-color:#145032}
+.empty{color:var(--mu);padding:30px;text-align:center}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div id="app" class="wrap"><div class="empty">Loading…</div></div>
+<div class="toasts" id="toasts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+'use strict';
+const CONFIG = {
+  SUPABASE_URL: 'https://kvnzcqtkkguuftrirsew.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2bnpjcXRra2d1dWZ0cmlyc2V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2Mzk5MTAsImV4cCI6MjEwNzIxNTkxMH0.vN5ELoWxAtAGDN_4qIPQaQ8mmv4h_G4e5EF4_7MbFt0',
+  LOGIN_URL: 'https://hassanchabri.github.io/Nel/?p=login',
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fdate = d => d ? new Date(d).toLocaleDateString('en-NG', {day:'numeric', month:'short', year:'numeric'}) : '—';
+
+const sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+let USERS = [];
+
+function toast(msg, type='') { const t=document.createElement('div'); t.className='toast '+type; t.textContent=msg; $('#toasts').appendChild(t); setTimeout(()=>t.remove(),4000); }
+
+async function callFn(action, extra) {
+  const { data, error } = await sb.functions.invoke('admin-api', { body: { action, ...extra } });
+  if (error) { let m='Something went wrong.'; try { const j = await error.context.json(); if (j?.error) m=j.error; } catch(_){} return { error: m }; }
+  if (data?.error) return { error: data.error };
+  return { data };
+}
+
+function userRow(u) {
+  const planBadge = u.plan_id === 'free' ? '<span class="badge wn">Free</span>' : `<span class="badge ok">${esc(u.plan_id)}</span>`;
+  return `<tr data-id="${u.id}">
+   <td><div>${esc(u.full_name || '—')}</div><div class="mu mono" style="font-size:12px">${esc(u.email)}</div></td>
+   <td>${u.email_confirmed_at ? '<span class="badge ok">Verified</span>' : '<span class="badge wn">Unverified</span>'}${u.banned ? ' <span class="badge er">Banned</span>' : ''}</td>
+   <td>${planBadge}${u.period_end ? `<div class="mu" style="font-size:12px">until ${fdate(u.period_end)}</div>` : ''}</td>
+   <td>${u.free_scan_used ? '<span class="mu">used</span>' : '<span class="badge ok">available</span>'}</td>
+   <td class="mono">${Number(u.paid_credits).toFixed(2)}</td>
+   <td>${u.scan_count}</td>
+   <td>${fdate(u.created_at)}</td>
+   <td><div class="row-actions">
+     <select class="planSel" style="min-height:32px;font-size:12.5px">
+       <option value="free" ${u.plan_id==='free'?'selected':''}>free</option>
+       <option value="pro" ${u.plan_id==='pro'?'selected':''}>pro</option>
+       <option value="premium" ${u.plan_id==='premium'?'selected':''}>premium</option>
+     </select>
+     <button class="btn setPlan">Set</button>
+     <button class="btn addCred">+50cr</button>
+     <button class="btn resetScan">Reset free scan</button>
+     ${u.email_confirmed_at ? '' : '<button class="btn verifyEmail">Verify email</button>'}
+     <button class="btn danger ${u.banned ? '' : 'danger'}" data-ban="${u.banned ? '0' : '1'}">${u.banned ? 'Unban' : 'Ban'}</button>
+   </div></td>
+  </tr>`;
+}
+
+function renderTable(list) {
+  if (!list.length) return '<div class="empty">No users match.</div>';
+  return `<div class="scroll"><table><thead><tr><th>User</th><th>Status</th><th>Plan</th><th>Free scan</th><th>Lab credits</th><th>Scans</th><th>Joined</th><th>Actions</th></tr></thead>
+   <tbody>${list.map(userRow).join('')}</tbody></table></div>`;
+}
+
+function wireRows() {
+  document.querySelectorAll('tr[data-id]').forEach(tr => {
+    const id = tr.dataset.id;
+    const u = USERS.find(x => x.id === id);
+    tr.querySelector('.setPlan').onclick = async () => {
+      const plan_id = tr.querySelector('.planSel').value;
+      const { error } = await callFn('set_plan', { user_id: id, plan_id, days: 30 });
+      if (error) toast(error, 'er'); else { toast(`Plan set to ${plan_id}.`, 'ok'); load(); }
+    };
+    tr.querySelector('.addCred').onclick = async () => {
+      const { error, data } = await callFn('adjust_credits', { user_id: id, delta: 50 });
+      if (error) toast(error, 'er'); else { toast('Added 50 credits.', 'ok'); load(); }
+    };
+    tr.querySelector('.resetScan').onclick = async () => {
+      const { error } = await callFn('reset_free_scan', { user_id: id });
+      if (error) toast(error, 'er'); else { toast('Free scan reset.', 'ok'); load(); }
+    };
+    const ve = tr.querySelector('.verifyEmail');
+    if (ve) ve.onclick = async () => {
+      const { error } = await callFn('verify_email_manually', { user_id: id });
+      if (error) toast(error, 'er'); else { toast('Email marked verified.', 'ok'); load(); }
+    };
+    tr.querySelector('[data-ban]').onclick = async () => {
+      const banned = tr.querySelector('[data-ban]').dataset.ban === '1';
+      if (!confirm(`${banned ? 'Ban' : 'Unban'} ${u.email}?`)) return;
+      const { error } = await callFn('set_banned', { user_id: id, banned });
+      if (error) toast(error, 'er'); else { toast(banned ? 'User banned.' : 'User unbanned.', 'ok'); load(); }
+    };
+  });
+}
+
+function shellUI() {
+  return `<div class="top"><h1>Admin</h1>
+    <div style="display:flex;gap:10px;align-items:center"><input id="search" placeholder="Search name or email" style="min-width:220px"><button class="btn" id="refresh">Refresh</button></div></div>
+   <div class="card" id="tableBox"></div>`;
+}
+
+async function load() {
+  const { error, data } = await callFn('list');
+  if (error) { $('#app').innerHTML = `<div class="empty" style="color:var(--er)">${esc(error)}</div>`; return; }
+  USERS = data.users.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  if (!$('#tableBox')) $('#app').innerHTML = shellUI();
+  $('#tableBox').innerHTML = renderTable(USERS);
+  wireRows();
+  $('#search').oninput = e => {
+    const q = e.target.value.toLowerCase();
+    const filtered = USERS.filter(u => (u.email||'').toLowerCase().includes(q) || (u.full_name||'').toLowerCase().includes(q));
+    $('#tableBox').innerHTML = renderTable(filtered);
+    wireRows();
+  };
+  $('#refresh').onclick = load;
+}
+
+(async function init() {
+  const { data: sess } = await sb.auth.getSession();
+  if (!sess.session) { location.href = CONFIG.LOGIN_URL; return; }
+  const { data: isAdmin } = await sb.rpc('am_i_admin');
+  if (!isAdmin) { $('#app').innerHTML = '<div class="empty">Not authorized. Your account does not have admin access.</div>'; return; }
+  load();
+})();
+})();
+</script>
+</body>
+</html>

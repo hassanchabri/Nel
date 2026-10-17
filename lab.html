@@ -196,13 +196,6 @@ function shell(activeName) {
   return `<aside class="rail">
    <div class="brand"><i>🛡</i><div><b>CHABRI LAB</b><span>SECURITY SUITE</span></div></div>
    <nav class="rnav">${NAV.map(([p, t]) => `<a href="?p=${p}" data-link ${activeName === p ? 'aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
-   <div class="rail-foot">
-     <a class="back-link" href="${esc(CONFIG.ACCESS_APP_URL)}">&larr; CHABRI ACCESS</a>
-     <div class="user-chip"><span class="dot"></span><span style="word-break:break-all">${esc(u ? u.email : '')}</span></div>
-     <button class="btn sm" id="lo" style="margin-top:10px;width:100%">Log out</button>
-   </div>
-  </aside>
-  <main id="main"><div class="wrap"></div></main>`;
 }
 
 /* ---------- auth gate ---------- */
@@ -293,19 +286,37 @@ PAGES['new-scan'] = {
   },
   mount: () => {
     const f = $('#f'); if (!f) return;
+    const dbg = document.createElement('pre');
+    dbg.id = 'debugLog';
+    dbg.style.cssText = 'background:#000;color:#3ddc84;font:12px monospace;padding:10px;border-radius:8px;margin-bottom:14px;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow:auto';
+    dbg.textContent = 'Debug log ready — tap Start scan.';
+    f.parentElement.insertBefore(dbg, f);
+    const dlog = (m) => { dbg.textContent += '\n' + m; dbg.scrollTop = dbg.scrollHeight; };
+
     f.addEventListener('submit', async e => {
       e.preventDefault();
-      const box = $('.form-error', f), btn = $('button[type=submit]', f);
-      box.hidden = true; $('#eurl').textContent = '';
-      const url = $('#url', f).value.trim();
-      if (!/^https?:\/\/.+/i.test(url)) { $('#eurl').textContent = 'Enter a full URL starting with http:// or https://.'; return; }
-      if (!$('#authorized', f).checked) { box.textContent = 'You must confirm authorization before scanning.'; box.hidden = false; return; }
-      btn.disabled = true; const label = btn.innerHTML; btn.innerHTML = '<span class="spin"></span> Starting scan';
-      const { data, error } = await callFn('security-scan', {
-        url, profile: $('#profile', f).value, authorized: true, label: $('#label', f).value.trim() || null
-      });
-      if (error) { box.textContent = error; box.hidden = false; btn.disabled = false; btn.innerHTML = label; return; }
-      go('scan-report', { id: data.scan_id, fresh: '1' }, true);
+      dlog('1) submit event fired.');
+      try {
+        const box = $('.form-error', f), btn = $('button[type=submit]', f);
+        box.hidden = true; $('#eurl').textContent = '';
+        const url = $('#url', f).value.trim();
+        dlog('2) url read: "' + url + '"');
+        if (!/^https?:\/\/.+/i.test(url)) { dlog('STOP: url failed regex check.'); $('#eurl').textContent = 'Enter a full URL starting with http:// or https://.'; return; }
+        const authorizedChecked = $('#authorized', f).checked;
+        dlog('3) authorized checkbox: ' + authorizedChecked);
+        if (!authorizedChecked) { dlog('STOP: checkbox not checked.'); box.textContent = 'You must confirm authorization before scanning.'; box.hidden = false; return; }
+        dlog('4) calling security-scan function...');
+        btn.disabled = true; const label = btn.innerHTML; btn.innerHTML = '<span class="spin"></span> Starting scan';
+        const { data, error } = await callFn('security-scan', {
+          url, profile: $('#profile', f).value, authorized: true, label: $('#label', f).value.trim() || null
+        });
+        dlog('5) function returned. error=' + JSON.stringify(error) + ' data=' + JSON.stringify(data));
+        if (error) { box.textContent = error; box.hidden = false; btn.disabled = false; btn.innerHTML = label; return; }
+        dlog('6) navigating to report...');
+        go('scan-report', { id: data.scan_id, fresh: '1' }, true);
+      } catch (ex) {
+        dlog('EXCEPTION: ' + (ex && ex.message) + '\n' + (ex && ex.stack));
+      }
     });
   }
 };
